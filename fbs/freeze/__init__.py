@@ -21,7 +21,9 @@ def run_pyinstaller(extra_args=None, debug=False):
     log_level = 'DEBUG' if debug else 'ERROR'
     args = [
         'pyinstaller',
-        '--name', app_name,
+        # '-mac' suffix added to app name due to conflict between module and app name in MacOS
+        # https://github.com/pyinstaller/pyinstaller/issues/7314
+        '--name', app_name + ('-mac' if is_mac() else ''),
         '--noupx',
         '--log-level', log_level,
         '--noconfirm'
@@ -46,7 +48,7 @@ def run_pyinstaller(extra_args=None, debug=False):
     args.extend(['--runtime-hook', hook_path])
     args.append(path(SETTINGS['main_module']))
     run(args, check=True)
-    output_dir = path('target/' + app_name + ('.app' if is_mac() else ''))
+    output_dir = path('target/' + app_name + ('-mac.app' if is_mac() else ''))
     freeze_dir = path('${freeze_dir}')
     # In most cases, rename(src, dst) silently "works" when src == dst. But on
     # some Windows drives, it raises a FileExistsError. So check src != dst:
