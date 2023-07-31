@@ -104,7 +104,7 @@ def freeze(debug=False):
     if not _has_module('PyInstaller'):
         raise FbsError(
             "Could not find PyInstaller. Maybe you need to:\n"
-            "    pip install PyInstaller==3.4"
+            "    pip install PyInstaller~=4.1"
         )
     version = SETTINGS['version']
     if not is_valid_version(version):
